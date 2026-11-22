@@ -1,7 +1,7 @@
 # @g8scope/express
 
 Express framework adapter for [g8scope](https://scope.g8suite.com). A **thin** error-handling
-middleware over the runtime SDK [`@g8scope/js`](../g8scope-js): it captures unhandled errors,
+middleware over the runtime SDK [`@g8scope/js`](../bliptrace-js): it captures unhandled errors,
 enriches them with request context, and ships them to the g8scope ingest API.
 
 It is designed never to throw into your app. Capture is fire-and-forget, so a slow or
@@ -41,7 +41,7 @@ without blocking, and then calls `next(err)` so Express continues to your own er
 
 ## Options
 
-All [`@g8scope/js` `ConfigOptions`](../g8scope-js) are accepted, plus two adapter-only escape
+All [`@g8scope/js` `ConfigOptions`](../bliptrace-js) are accepted, plus two adapter-only escape
 hatches for testing and advanced wiring:
 
 | Option | Type | Notes |
