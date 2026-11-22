@@ -33,7 +33,7 @@ const app = express();
 // ... your routes ...
 
 // Must be last.
-app.use(g8scopeErrorHandler({ key: process.env.G8SCOPE_KEY }));
+app.use(g8scopeErrorHandler({ key: process.env.BLIPTRACE_KEY }));
 ```
 
 When an error reaches the middleware it builds an envelope (with request context), ships it

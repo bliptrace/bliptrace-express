@@ -34,7 +34,7 @@ function resolveClient(options: G8scopeExpressOptions = {}): Client {
  * Register it as the LAST middleware:
  *
  * ```ts
- * app.use(g8scopeErrorHandler({ key: process.env.G8SCOPE_KEY }));
+ * app.use(g8scopeErrorHandler({ key: process.env.BLIPTRACE_KEY }));
  * ```
  *
  * The capture is fire-and-forget — it runs after the framework continues the chain,
