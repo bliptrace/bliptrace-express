@@ -48,7 +48,7 @@
     "type": "git",
     "url": "git+https://github.com/bliptrace/bliptrace-express.git"
   },
-  "homepage": "https://scope.g8suite.com",
+  "homepage": "https://bliptrace.com",
   "engines": {
     "node": ">=18"
   }

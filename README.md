@@ -1,6 +1,6 @@
 # @bliptrace/express
 
-Express framework adapter for [Bliptrace](https://scope.g8suite.com). A **thin** error-handling
+Express framework adapter for [Bliptrace](https://bliptrace.com). A **thin** error-handling
 middleware over the runtime SDK [`@bliptrace/js`](../bliptrace-js): it captures unhandled errors,
 enriches them with request context, and ships them to the Bliptrace ingest API.
 
