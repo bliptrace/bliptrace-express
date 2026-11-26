@@ -1,10 +1,10 @@
-import { Client, Config, type ConfigOptions, type Transport } from '@g8scope/js';
+import { Client, Config, type ConfigOptions, type Transport } from '@bliptrace/js';
 import type { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import { contextFromRequest } from './context.js';
 
 export { contextFromRequest } from './context.js';
-export { Client, Config } from '@g8scope/js';
-export type { ConfigOptions, Transport } from '@g8scope/js';
+export { Client, Config } from '@bliptrace/js';
+export type { ConfigOptions, Transport } from '@bliptrace/js';
 
 /**
  * Options for the Express adapter. These are the runtime SDK's {@link ConfigOptions}
@@ -13,7 +13,7 @@ export type { ConfigOptions, Transport } from '@g8scope/js';
  * Remember: the project is resolved server-side from the ingest `key`. It is never
  * part of the payload and there is no `project` option here.
  */
-export interface G8scopeExpressOptions extends ConfigOptions {
+export interface BliptraceExpressOptions extends ConfigOptions {
   /** Inject a pre-built client (e.g. with a fake transport in tests). Wins over everything else. */
   client?: Client;
   /** Inject a transport for the internally-built client (e.g. a recording fake in tests). */
@@ -21,7 +21,7 @@ export interface G8scopeExpressOptions extends ConfigOptions {
 }
 
 /** Resolve a {@link Client} from adapter options, honouring an injected client/transport. */
-function resolveClient(options: G8scopeExpressOptions = {}): Client {
+function resolveClient(options: BliptraceExpressOptions = {}): Client {
   if (options.client) return options.client;
   const { client: _client, transport, ...configOptions } = options;
   return new Client(new Config(configOptions), transport);
@@ -29,19 +29,19 @@ function resolveClient(options: G8scopeExpressOptions = {}): Client {
 
 /**
  * Build an Express error-handling middleware that captures the error with request
- * context and ships it to g8scope, then hands control back to your own error handling.
+ * context and ships it to Bliptrace, then hands control back to your own error handling.
  *
  * Register it as the LAST middleware:
  *
  * ```ts
- * app.use(g8scopeErrorHandler({ key: process.env.BLIPTRACE_KEY }));
+ * app.use(bliptraceErrorHandler({ key: process.env.BLIPTRACE_KEY }));
  * ```
  *
  * The capture is fire-and-forget — it runs after the framework continues the chain,
  * so a slow or down ingest API never delays your response. Capture is fully guarded:
  * any failure here is swallowed and the original error still flows to `next(err)`.
  */
-export function g8scopeErrorHandler(options: G8scopeExpressOptions = {}): ErrorRequestHandler {
+export function bliptraceErrorHandler(options: BliptraceExpressOptions = {}): ErrorRequestHandler {
   let client: Client | null = null;
   try {
     client = resolveClient(options);
@@ -63,8 +63,8 @@ export function g8scopeErrorHandler(options: G8scopeExpressOptions = {}): ErrorR
   };
 }
 
-/** Alias for {@link g8scopeErrorHandler}. */
-export const g8scopeMiddleware = g8scopeErrorHandler;
+/** Alias for {@link bliptraceErrorHandler}. */
+export const bliptraceMiddleware = bliptraceErrorHandler;
 
-/** Alias for {@link g8scopeErrorHandler}. */
-export const init = g8scopeErrorHandler;
+/** Alias for {@link bliptraceErrorHandler}. */
+export const init = bliptraceErrorHandler;

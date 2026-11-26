@@ -1,7 +1,7 @@
-import { Client, Config, type Envelope, type Transport } from '@g8scope/js';
+import { Client, Config, type Envelope, type Transport } from '@bliptrace/js';
 import type { NextFunction, Request, Response } from 'express';
 import { describe, expect, it, vi } from 'vitest';
-import { g8scopeErrorHandler } from '../src/index.js';
+import { bliptraceErrorHandler } from '../src/index.js';
 
 class FakeTransport implements Transport {
   sent: Array<{ endpoint: string; key: string; envelope: Envelope; timeout: number }> = [];
@@ -21,11 +21,11 @@ function fakeReq(): Request {
 
 const res = {} as Response;
 
-describe('g8scopeErrorHandler', () => {
+describe('bliptraceErrorHandler', () => {
   it('builds and ships a valid envelope for a thrown Error and calls next(err)', async () => {
     const t = new FakeTransport();
     const client = new Client(new Config({ key: 'k', endpoint: 'http://api' }), t);
-    const handler = g8scopeErrorHandler({ client });
+    const handler = bliptraceErrorHandler({ client });
 
     const next = vi.fn();
     const err = new Error('checkout failed');
@@ -43,7 +43,7 @@ describe('g8scopeErrorHandler', () => {
     const env = t.sent[0].envelope;
     expect(env.runtime.name).toBe('javascript');
     expect(env.sdk).toBeDefined();
-    expect(env.sdk?.name).toBe('g8scope-js');
+    expect(env.sdk?.name).toBe('bliptrace-js');
     expect(env.exception.type).toBe('Error');
     expect(env.exception.message).toBe('checkout failed');
 
@@ -55,7 +55,7 @@ describe('g8scopeErrorHandler', () => {
 
   it('accepts a transport instead of a full client', async () => {
     const t = new FakeTransport();
-    const handler = g8scopeErrorHandler({ key: 'k', transport: t });
+    const handler = bliptraceErrorHandler({ key: 'k', transport: t });
     const next = vi.fn();
 
     handler(new TypeError('boom'), fakeReq(), res, next as unknown as NextFunction);
@@ -69,7 +69,7 @@ describe('g8scopeErrorHandler', () => {
 
   it('sends nothing when no key is configured but still calls next', async () => {
     const t = new FakeTransport();
-    const handler = g8scopeErrorHandler({ transport: t });
+    const handler = bliptraceErrorHandler({ transport: t });
     const next = vi.fn();
 
     handler(new Error('x'), fakeReq(), res, next as unknown as NextFunction);
@@ -81,7 +81,7 @@ describe('g8scopeErrorHandler', () => {
 
   it('sends nothing when disabled', async () => {
     const t = new FakeTransport();
-    const handler = g8scopeErrorHandler({ key: 'k', enabled: false, transport: t });
+    const handler = bliptraceErrorHandler({ key: 'k', enabled: false, transport: t });
     const next = vi.fn();
 
     handler(new Error('x'), fakeReq(), res, next as unknown as NextFunction);
@@ -93,7 +93,7 @@ describe('g8scopeErrorHandler', () => {
 
   it('does not ship non-Error values but still forwards them', async () => {
     const t = new FakeTransport();
-    const handler = g8scopeErrorHandler({ key: 'k', transport: t });
+    const handler = bliptraceErrorHandler({ key: 'k', transport: t });
     const next = vi.fn();
 
     const weird = 'a string was thrown';
@@ -110,7 +110,7 @@ describe('g8scopeErrorHandler', () => {
         throw new Error('transport down');
       },
     };
-    const handler = g8scopeErrorHandler({ key: 'k', transport: exploding });
+    const handler = bliptraceErrorHandler({ key: 'k', transport: exploding });
     const next = vi.fn();
 
     const err = new Error('x');

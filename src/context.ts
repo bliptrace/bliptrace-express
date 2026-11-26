@@ -1,4 +1,4 @@
-import type { Context } from '@g8scope/js';
+import type { Context } from '@bliptrace/js';
 import type { Request } from 'express';
 
 /** Header names stripped from every capture — they carry credentials. */

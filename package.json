@@ -1,9 +1,9 @@
 {
-  "name": "@g8scope/express",
+  "name": "@bliptrace/express",
   "version": "1.0.0",
-  "description": "Express framework adapter for g8scope — a thin error-handling middleware over @g8scope/js that enriches captures with request context and ships them without ever throwing into the host app.",
+  "description": "Express framework adapter for Bliptrace — a thin error-handling middleware over @bliptrace/js that enriches captures with request context and ships them without ever throwing into the host app.",
   "keywords": [
-    "g8scope",
+    "bliptrace",
     "express",
     "error-tracking",
     "observability",
@@ -34,7 +34,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@g8scope/js": "file:../bliptrace-js"
+    "@bliptrace/js": "file:../bliptrace-js"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
